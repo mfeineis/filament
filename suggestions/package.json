@@ -1,0 +1,19 @@
+{
+  "name": "rye-suggestions",
+  "version": "0.1.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --mode=development --hot --inline --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Martin Feineis",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.1.3",
+    "webpack-dev-server": "^3.1.4"
+  }
+}
