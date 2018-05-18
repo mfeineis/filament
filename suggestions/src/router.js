@@ -92,10 +92,12 @@ export function configureRouter(customElements, document, setTimeout) {
     return api;
 };
 
-export const setup = ({ customElements, document, setTimeout }) => {
+export const setup = ({ customElements, setTimeout }, document) => {
     const router = configureRouter(customElements, document, setTimeout);
 
-    Rye.define("core/router", [], () => router);
+    if (typeof Rye !== "undefined") {
+        Rye.define("rye-core/router", [], () => router);
+    }
 
     return router;
 };
