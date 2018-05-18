@@ -24,6 +24,18 @@ const devConfig = ({ isDev }) => {
     };
 };
 
+const widgetConfig = () => ({
+    module: {
+        rules: [
+            {
+                loader: './widget-loader',
+                //options: { someOption: true },
+                //test: /\.widget\.jsx?$/,
+            },
+        ],
+    },
+});
+
 module.exports = (env = {}, argv = {}) => {
     const NODE_ENV = argv.mode || process.env.NODE_ENV || "development";
     env.mode = NODE_ENV === "production" ? "production" : "development";
@@ -54,6 +66,7 @@ module.exports = (env = {}, argv = {}) => {
     );
 
     const suggestionsConfig = merge.smart(
+        widgetConfig(settings),
         devConfig(settings),
         {
             entry: path.resolve(settings.rootDir, "./src/suggestions.widget"),
@@ -66,9 +79,13 @@ module.exports = (env = {}, argv = {}) => {
 
     );
 
-    return [
+    const result = [
         appConfig,
         suggestionsConfig,
     ];
+
+    console.log('webpack.config', result);
+
+    return result;
 };
 

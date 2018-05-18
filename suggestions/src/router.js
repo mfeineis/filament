@@ -3,7 +3,7 @@
 
 // FIXME: The router should probably be part of the loader bundle
 //        acting as the single required dependency on any Rye page
-export function configureRouter(customElements, setTimeout) {
+export function configureRouter(customElements, document, setTimeout) {
 
     const state = {
         guid: 0,
@@ -12,20 +12,20 @@ export function configureRouter(customElements, setTimeout) {
     };
 
     // FIXME: OMG, please validate this thoroughly
-    const validateMeta = meta => meta && meta.fragment && meta.module && meta.route;
+    const validateMeta = meta => meta && meta.element && meta.fragment;
 
     // FIXME: Might not be necessary
     const nextTick = fn => setTimeout(fn, 0);
 
     // FIXME: Either make that more router-y or use props or sth.
-    const matchesRoute = (meta, route) => meta.route === route;
+    const matchesRoute = (meta, element) => meta.element === element;
 
     // FIXME: OMG, side-effects in a filter...
     const dispatchQueue = (state, meta) => {
-        state.queue = state.queue.filter(({ route, next }) => {
-            if (matchesRoute(meta, route)) {
+        state.queue = state.queue.filter(({ element, next }) => {
+            if (matchesRoute(meta, element)) {
                 nextTick(() => {
-                    requestWidget(state, route, next);
+                    requestWidget(state, element, next);
                 });
                 return false;
             }
@@ -36,37 +36,45 @@ export function configureRouter(customElements, setTimeout) {
 
     // FIXME: Validation, validation, validation...
     const api = {
-        register(meta) {
-            console.log('router.register', meta);
+        declare: (meta) => {
+            console.log('router.declare', meta);
 
-            if (state.routes[meta.route]) {
-                console.error(`router.register: "${meta.route}" is already defined`);
+            if (state.routes[meta.element]) {
+                console.error(`router.declare: "${meta.element}" is already defined`);
                 return;
             }
 
             if (!validateMeta(meta)) {
-                console.error(`router.register: meta for "${meta.route}" invalid`);
+                console.error(`router.declare: meta for "${meta.element}" invalid`);
                 return;
             }
 
-            state.routes[meta.route] = {
+            state.routes[meta.element] = {
                 meta,
             };
+
+            customElements.define(meta.element, class extends HTMLElement {
+                connectedCallback() {
+                    requestWidget(state, meta.element, factory => (
+                        factory(this, document)
+                    ));
+                }
+            });
 
             dispatchQueue(state, meta);
         },
     };
 
     // TODO: This is actually not so bad but needs refinement
-    const requestWidget = (state, route, next) => {
-        console.log("requestWidget", route);
+    const requestWidget = (state, element, next) => {
+        console.log("requestWidget", element);
 
-        const registration = state.routes[route];
+        const registration = state.routes[element];
         console.log("  registration", registration);
 
         if (!registration) {
             console.warn(`router.requestWidget: widget not found`);
-            state.queue.push({ timestamp: Date.now(), route, next });
+            state.queue.push({ timestamp: Date.now(), element, next });
 
             console.log(`router.state`, state);
             return;
@@ -74,54 +82,18 @@ export function configureRouter(customElements, setTimeout) {
 
         const req = Rye.require.config({
             paths: {
-                [registration.meta.module]: registration.meta.fragment.replace(/\.js$/, ''),
+                [registration.meta.element]: registration.meta.fragment.replace(/\.js$/, ''),
             },
         });
 
-        req([registration.meta.module], next);
+        req([registration.meta.element], next);
     };
-
-    // FIXME: Do we use props of the element and/or a route abstraction?
-    //        The API needs to be streamlined but the approach is quite
-    //        elegant, thanks to the "enhance" concept.
-    customElements.define('router-fragment', class extends HTMLElement {
-        constructor() {
-            super();
-
-            state.guid += 1;
-        }
-
-        connectedCallback() {
-            this.id = `rf-${state.guid}-${Date.now()}`;
-            this.isDisposed = false;
-
-            const route = this.getAttribute("route");
-            console.log("connected", route, this.id, this);
-
-            const root = document.createElement("div");
-            this.appendChild(root);
-
-            requestWidget(state, route, factory => {
-
-                if (this.isDisposed) {
-                    console.log(`router.requestWidget: widget ${this.id} is disposed`);
-                    return;
-                }
-
-                factory(root, { id: this.id });
-            });
-        }
-
-        disconnectedCallback() {
-            this.isDisposed = true;
-        }
-    });
 
     return api;
 };
 
-export const setup = ({ customElements, setTimeout }) => {
-    const router = configureRouter(customElements, setTimeout);
+export const setup = ({ customElements, document, setTimeout }) => {
+    const router = configureRouter(customElements, document, setTimeout);
 
     Rye.define("core/router", [], () => router);
 
