@@ -23,6 +23,7 @@ const repoConfig = ({ rootDir }) => ({
         alias: {
             "rye-core": path.resolve(rootDir, "../../rye-core"),
             "rye-suggestions": path.resolve(rootDir, "../../pagelets/rye-suggestions"),
+            "rye-suggestions.pagelet": path.resolve(rootDir, "../../pagelets/rye-suggestions.pagelet"),
         },
     },
 });

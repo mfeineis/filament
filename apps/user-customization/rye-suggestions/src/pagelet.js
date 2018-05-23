@@ -1,9 +1,8 @@
-// FIXME: It may be better to have an explicit module to define the pagelet instead
-//        of the webpack loader magic.
+import { define } from "rye-pagelet";
 
 export const PAGELET_NAME = "rye-suggestions";
 
-export const pageletFactory = root => {
+export const factory = root => {
     const document = root.ownerDocument;
     //root.innerHTML = "<pre>rye-suggestions bla</pre>";
 
@@ -27,3 +26,4 @@ export const pageletFactory = root => {
     //));
 };
 
+define(PAGELET_NAME, factory);

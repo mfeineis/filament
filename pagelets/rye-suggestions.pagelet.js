@@ -71,23 +71,56 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "../../../rye-pagelet/src/index.js":
+/*!*******************************************************************!*\
+  !*** /home/dev/workspace/playground/rye/rye-pagelet/src/index.js ***!
+  \*******************************************************************/
+/*! exports provided: define */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "define", function() { return define; });
+/* global Rye */
+// FIXME: Maybe we should add "rye-core" as an explicit but external dependency?
+
+const define = (name, factory) => {
+    console.log("rye-pagelet.index name", name, "factory", factory);
+
+    if (typeof name !== "string" || !/rye-[\w]+/.test(name)) {
+        throw new Error("Pagelet name is not defined or invalid.");
+    }
+
+    if (typeof factory !== "function" || factory.length < 1) {
+        throw new Error([
+            "Pagelet factory should receive at least one 'rootNode' dependency."
+        ].join(" "));
+    }
+
+    Rye.define(name, [], () => factory);
+};
+
+
+
+/***/ }),
+
 /***/ "./src/pagelet.js":
 /*!************************!*\
   !*** ./src/pagelet.js ***!
   \************************/
-/*! exports provided: PAGELET_NAME, pageletFactory */
+/*! exports provided: PAGELET_NAME, factory */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PAGELET_NAME", function() { return PAGELET_NAME; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pageletFactory", function() { return pageletFactory; });
-// FIXME: It may be better to have an explicit module to define the pagelet instead
-//        of the webpack loader magic.
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "factory", function() { return factory; });
+/* harmony import */ var rye_pagelet__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rye-pagelet */ "../../../rye-pagelet/src/index.js");
+
 
 const PAGELET_NAME = "rye-suggestions";
 
-const pageletFactory = root => {
+const factory = root => {
     const document = root.ownerDocument;
     //root.innerHTML = "<pre>rye-suggestions bla</pre>";
 
@@ -111,23 +144,10 @@ const pageletFactory = root => {
     //));
 };
 
+Object(rye_pagelet__WEBPACK_IMPORTED_MODULE_0__["define"])(PAGELET_NAME, factory);
 
-
-if (typeof PAGELET_NAME !== "string" || !/rye-[\w]+/.test(PAGELET_NAME)) {
-    throw new Error("PAGELET_NAME is not defined or invalid.");
-}
-
-if (typeof pageletFactory !== "function" || pageletFactory.length < 1) {
-    throw new Error([
-        "pageletFactory should receive at least one 'rootNode' dependency."
-    ].join(" "));
-}
-
-Rye.define(PAGELET_NAME, [], () => pageletFactory);
-
-    
 
 /***/ })
 
 /******/ });
-//# sourceMappingURL=rye-suggestions.pagelet.js.map?32c2cb75d5b6b
+//# sourceMappingURL=rye-suggestions.pagelet.js.map?8b6298c7afec7

@@ -54,17 +54,16 @@ module.exports = (env = {}, argv = {}) => {
         outputConfig(settings),
         {
             entry: path.resolve(settings.rootDir, "./src/registration"),
-            module: {
-                rules: [
-                    {
-                        loader: '../../../rye-core-registration-loader',
-                        //options: { someOption: true },
-                        //test: /\.widget\.jsx?$/,
-                    },
-                ],
-            },
             output: {
                 filename: "rye-suggestions.js?[hash:13]",
+            },
+            resolve: {
+                alias: {
+                    "rye-pagelet-registry": path.resolve(
+                        settings.rootDir,
+                        "../../../rye-pagelet-registry"
+                    ),
+                },
             },
         },
         modeConfig(settings)
@@ -75,17 +74,16 @@ module.exports = (env = {}, argv = {}) => {
         outputConfig(settings),
         {
             entry: path.resolve(settings.rootDir, "./src/pagelet"),
-            module: {
-                rules: [
-                    {
-                        loader: '../../../rye-core-pagelet-loader',
-                        //options: { someOption: true },
-                        //test: /\.widget\.jsx?$/,
-                    },
-                ],
-            },
             output: {
                 filename: "rye-suggestions.pagelet.js?[hash:13]",
+            },
+            resolve: {
+                alias: {
+                    "rye-pagelet": path.resolve(
+                        settings.rootDir,
+                        "../../../rye-pagelet"
+                    ),
+                },
             },
         },
         modeConfig(settings)
