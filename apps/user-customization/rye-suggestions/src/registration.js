@@ -1,3 +1,5 @@
+// FIXME: It may be better to have an explicit module to register the pagelet instead
+//        of the webpack loader magic.
 
 // FIXME: This should be generated or rather be used to generate
 //        the final artifact. How do we make sure there is no
@@ -7,7 +9,7 @@ export const registration = ({ declare }) => (
     // FIXME: Refine the API
     declare({
         element: "rye-suggestions",
-        fragment: "rye-suggestions.js",
+        fragment: "/pagelets/rye-suggestions.pagelet.js",
     })
 
 );

@@ -1,8 +1,4 @@
-// FIXME: This one global is probably unavoidable but it would be nice to have the
-//        router live alongside the loader and have that as the single platform
-//        dependency.
-
-window.Rye = window.Rye || (function () {
+export const loader = (function (module) {
     ////Define a require object here that has any
     ////default configuration you want for RequireJS. If
     ////you do not have any config options you want to set,
@@ -2165,8 +2161,3 @@ var requirejs, require, define;
         require: require
     };
 }());
-
-// FIXME: Mehhh...
-if (typeof module !== "undefined") {
-    module.exports = window.Rye;
-}

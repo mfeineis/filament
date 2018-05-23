@@ -1,17 +1,45 @@
 const path = require("path");
 
+const express = require("express");
+
 const { HotModuleReplacementPlugin } = require("webpack");
 const merge = require("webpack-merge");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackExternalsPlugin = require("html-webpack-externals-plugin");
 
-const devConfig = ({ isDev }) => {
+const repoConfig = ({ rootDir }) => ({
+    //plugins: [
+    //    new HtmlWebpackExternalsPlugin({
+    //        externals: [
+    //            {
+    //                entry: path.resolve({}),
+    //                module: "",
+    //            },
+    //        ],
+    //    }),
+    //],
+    resolve: {
+        alias: {
+            "rye-core": path.resolve(rootDir, "../../rye-core"),
+            "rye-suggestions": path.resolve(rootDir, "../../pagelets/rye-suggestions"),
+        },
+    },
+});
+
+const devConfig = ({ isDev, rootDir }) => {
     if (!isDev) {
         return {};
     }
 
     return {
         devServer: {
+            before: (app) => {
+                const servePagelets = express.static(
+                    path.resolve(rootDir, "../../pagelets/")
+                );
+                app.use("/pagelets/", servePagelets);
+            },
             historyApiFallback: true,
             host: "0.0.0.0",
             hot: true,
@@ -23,18 +51,6 @@ const devConfig = ({ isDev }) => {
         watch: true,
     };
 };
-
-const widgetConfig = () => ({
-    module: {
-        rules: [
-            {
-                loader: './widget-loader',
-                //options: { someOption: true },
-                //test: /\.widget\.jsx?$/,
-            },
-        ],
-    },
-});
 
 module.exports = (env = {}, argv = {}) => {
     const NODE_ENV = argv.mode || process.env.NODE_ENV || "development";
@@ -48,6 +64,7 @@ module.exports = (env = {}, argv = {}) => {
 
     const appConfig = merge.smart(
         {
+            devtool: "sourcemap",
             plugins: [
                 new CleanWebpackPlugin(["dist"]),
                 new HtmlWebpackPlugin({
@@ -62,26 +79,26 @@ module.exports = (env = {}, argv = {}) => {
                 path: path.resolve(settings.rootDir, "./dist"),
             },
         },
+        repoConfig(settings),
         { mode: env.mode }
     );
 
-    const suggestionsConfig = merge.smart(
-        widgetConfig(settings),
-        devConfig(settings),
-        {
-            entry: path.resolve(settings.rootDir, "./src/suggestions.widget"),
-            output: {
-                filename: "rye-suggestions.js?[hash:13]",
-                path: path.resolve(settings.rootDir, "./dist"),
-            },
-        },
-        { mode: env.mode },
-
-    );
+    //const suggestionsConfig = merge.smart(
+    //    widgetConfig(settings),
+    //    devConfig(settings),
+    //    {
+    //        entry: path.resolve(settings.rootDir, "./src/suggestions.widget"),
+    //        output: {
+    //            filename: "rye-suggestions.js?[hash:13]",
+    //            path: path.resolve(settings.rootDir, "./dist"),
+    //        },
+    //    },
+    //    { mode: env.mode }
+    //);
 
     const result = [
         appConfig,
-        suggestionsConfig,
+        //suggestionsConfig,
     ];
 
     console.log('webpack.config', result);

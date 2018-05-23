@@ -1,11 +1,14 @@
+// FIXME: It may be better to have an explicit module to define the pagelet instead
+//        of the webpack loader magic.
 
-export const WIDGET_NAME = "rye-suggestions";
+export const PAGELET_NAME = "rye-suggestions";
 
-export const widgetFactory = (root, document) => {
+export const pageletFactory = root => {
+    const document = root.ownerDocument;
     //root.innerHTML = "<pre>rye-suggestions bla</pre>";
 
     const it = document.createElement("div");
-    it.setAttribute("data-widget", "true");
+    it.setAttribute("data-pagelet", "true");
     it.innerHTML = "<pre>rye-suggestions</pre>";
 
     const one = document.createElement("span");

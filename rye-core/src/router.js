@@ -1,8 +1,5 @@
-// FIXME: Stupid globals...
-/* global Rye */
+import { loader } from "./loader";
 
-// FIXME: The router should probably be part of the loader bundle
-//        acting as the single required dependency on any Rye page
 export function configureRouter(customElements, document, setTimeout) {
 
     const state = {
@@ -56,7 +53,7 @@ export function configureRouter(customElements, document, setTimeout) {
             customElements.define(meta.element, class extends HTMLElement {
                 connectedCallback() {
                     requestWidget(state, meta.element, factory => (
-                        factory(this, document)
+                        factory(this)
                     ));
                 }
             });
@@ -80,7 +77,7 @@ export function configureRouter(customElements, document, setTimeout) {
             return;
         }
 
-        const req = Rye.require.config({
+        const req = loader.require.config({
             paths: {
                 [registration.meta.element]: registration.meta.fragment.replace(/\.js$/, ''),
             },
@@ -92,14 +89,3 @@ export function configureRouter(customElements, document, setTimeout) {
     return api;
 };
 
-export const setup = ({ customElements, setTimeout }, document) => {
-    const router = configureRouter(customElements, document, setTimeout);
-
-    if (typeof Rye !== "undefined") {
-        Rye.define("rye-core/router", [], () => router);
-    }
-
-    return router;
-};
-
-export default setup;
