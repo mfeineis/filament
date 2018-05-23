@@ -82,7 +82,6 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "register", function() { return register; });
 /* global Rye */
-// FIXME: Maybe we should add "rye-core" as an explicit but external dependency?
 
 const register = factory => {
 
@@ -131,4 +130,4 @@ Object(rye_pagelet_registry__WEBPACK_IMPORTED_MODULE_0__["register"])(({ declare
 /***/ })
 
 /******/ });
-//# sourceMappingURL=rye-suggestions.js.map?440d7d3c12922
+//# sourceMappingURL=rye-suggestions.js.map?f4c2e3fb91987

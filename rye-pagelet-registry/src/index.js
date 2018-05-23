@@ -1,5 +1,4 @@
 /* global Rye */
-// FIXME: Maybe we should add "rye-core" as an explicit but external dependency?
 
 export const register = factory => {
 

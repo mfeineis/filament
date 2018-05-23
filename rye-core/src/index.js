@@ -11,11 +11,9 @@ const Api = loader;
 Api.define("rye-core/router", [], () => router);
 
 if (typeof window !== "undefined") {
-    // FIXME: This one global is probably unavoidable but it would be nice to have the
-    //        router live alongside the loader and have that as the single platform
-    //        dependency.
+    // This global is unavoidable since that is our single point of entry
     window.Rye = window.Rye || Api;
 } else {
-    // FIXME: Mehhh...
+    // FIXME: Mehhh... maybe use a suitable webpack library target for "rye-core"?
     module.exports = Api;
 }
