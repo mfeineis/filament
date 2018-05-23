@@ -2,7 +2,6 @@
 // FIXME: Maybe we should add "rye-core" as an explicit but external dependency?
 
 export const define = (name, factory) => {
-    console.log("rye-pagelet.index name", name, "factory", factory);
 
     if (typeof name !== "string" || !/rye-[\w]+/.test(name)) {
         throw new Error("Pagelet name is not defined or invalid.");

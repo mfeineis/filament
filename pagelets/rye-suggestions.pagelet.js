@@ -85,7 +85,6 @@ __webpack_require__.r(__webpack_exports__);
 // FIXME: Maybe we should add "rye-core" as an explicit but external dependency?
 
 const define = (name, factory) => {
-    console.log("rye-pagelet.index name", name, "factory", factory);
 
     if (typeof name !== "string" || !/rye-[\w]+/.test(name)) {
         throw new Error("Pagelet name is not defined or invalid.");
@@ -150,4 +149,4 @@ Object(rye_pagelet__WEBPACK_IMPORTED_MODULE_0__["define"])(PAGELET_NAME, factory
 /***/ })
 
 /******/ });
-//# sourceMappingURL=rye-suggestions.pagelet.js.map?8b6298c7afec7
+//# sourceMappingURL=rye-suggestions.pagelet.js.map?32516094d914d
