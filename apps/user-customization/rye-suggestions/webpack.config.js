@@ -38,8 +38,7 @@ const outputConfig = ({ rootDir }) => ({
 module.exports = (env = {}, argv = {}) => {
     const NODE_ENV = argv.mode || process.env.NODE_ENV || "development";
 
-    // FIXME: Create suggestions pagelet in "production" mode
-    env.mode = "development";
+    env.mode = NODE_ENV === "production" ? "production" : "development";
 
     const settings = {
         env: NODE_ENV,
@@ -53,7 +52,7 @@ module.exports = (env = {}, argv = {}) => {
         devConfig(settings),
         outputConfig(settings),
         {
-            entry: path.resolve(settings.rootDir, "./src/registration"),
+            entry: path.resolve(settings.rootDir, "./js/registration"),
             output: {
                 filename: "rye-suggestions.js?[hash:13]",
             },
@@ -73,7 +72,7 @@ module.exports = (env = {}, argv = {}) => {
         devConfig(settings),
         outputConfig(settings),
         {
-            entry: path.resolve(settings.rootDir, "./src/pagelet"),
+            entry: path.resolve(settings.rootDir, "./js/pagelet"),
             output: {
                 filename: "rye-suggestions.pagelet.js?[hash:13]",
             },
