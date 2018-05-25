@@ -1,6 +1,7 @@
 // The page needs to take care of polyfilling the environment to the necessary level
 // FIXME: Find a nice way to provide only the necessary polyfills
-import "./polyfills";
+import "../polyfills/custom-elements.js";
+import "../polyfills/custom-event.js";
 
 import Rye from "rye-core";
 import "rye-suggestions";
@@ -9,7 +10,6 @@ import "rye-suggestions";
 // pull the file and everything should work seamlessly
 //import "rye-suggestions.pagelet";
 
-// FIXME: Make the bootstrapping bullet-proof
 export function setup(window, document) {
 
     const it = document.createElement("rye-suggestions");

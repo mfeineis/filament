@@ -1,8 +1,7 @@
 // FIXME: Do we need the "classlist-polyfill" for browser support?
 //import 'classlist-polyfill';
 
-// Ahhh, IE11, why won't you let us be
-(function() {
+(function () {
 
     if (typeof window.CustomEvent === 'function') {
         return false;

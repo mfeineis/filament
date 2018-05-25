@@ -1,14 +1,13 @@
 import { loader } from "./loader";
-import { configureRouter } from "./router";
+import { configureRuntime } from "./runtime";
 
 const { customElements, document, setTimeout } = window;
-const router = configureRouter(customElements, document, setTimeout);
+const runtime = configureRuntime(loader, customElements, document, setTimeout);
 
 const Api = loader;
 
-// FIXME: Find something better than "rye-core/router" because it's not a really
-//        a router anymore...
-Api.define("rye-core/router", [], () => router);
+// Providing the runtime dependency 
+Api.define("rye-core/runtime/v1", [], () => runtime);
 
 if (typeof window !== "undefined") {
     // This global is unavoidable since that is our single point of entry

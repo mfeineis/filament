@@ -1,9 +1,14 @@
 /* global Rye */
-// FIXME: Maybe we should add "rye-core" as an explicit but external dependency?
+
+const reserved = {
+    "rye-core": true,
+    "rye-pagelet": true,
+    "rye-pagelet-registry": true,
+};
 
 export const define = (name, factory) => {
 
-    if (typeof name !== "string" || !/rye-[\w]+/.test(name)) {
+    if (typeof name !== "string" || !/rye-[\w]+/.test(name) || name in reserved) {
         throw new Error("Pagelet name is not defined or invalid.");
     }
 

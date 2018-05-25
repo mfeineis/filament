@@ -1,6 +1,5 @@
-import { loader } from "./loader";
 
-export function configureRouter(customElements, document, setTimeout) {
+export function configureRuntime(loader, customElements, document, setTimeout) {
 
     const state = {
         guid: 0,
@@ -51,6 +50,7 @@ export function configureRouter(customElements, document, setTimeout) {
             };
 
             customElements.define(meta.element, class extends HTMLElement {
+                // FIXME: This should probably clean up after itself
                 connectedCallback() {
                     requestWidget(state, meta.element, factory => (
                         factory(this)

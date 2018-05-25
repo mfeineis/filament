@@ -9,6 +9,6 @@ export const register = factory => {
         ].join(" "));
     }
 
-    Rye.require(["rye-core/router"], factory);
+    Rye.require(["rye-core/runtime/v1"], factory);
 };
 

@@ -1,5 +1,6 @@
 dist/
 private/
+.tern-port
 
 # elm-package generated files
 elm-stuff
