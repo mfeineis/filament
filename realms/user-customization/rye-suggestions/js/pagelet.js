@@ -4,7 +4,7 @@ import { Elm } from "../dist/elm";
 
 export const PAGELET_NAME = "rye-suggestions";
 
-export const factory = root => {
+export const factory = (root, props) => {
     //const document = root.ownerDocument;
     //root.innerHTML = "<pre>rye-suggestions bla</pre>";
 

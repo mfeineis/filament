@@ -1,5 +1,7 @@
 /* global Rye */
 
+// FIXME: This validation should not be in the PROD build
+
 const reserved = {
     "rye-core": true,
     "rye-pagelet": true,

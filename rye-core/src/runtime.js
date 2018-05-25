@@ -8,20 +8,17 @@ export function configureRuntime(loader, customElements, document, setTimeout) {
     };
 
     // FIXME: OMG, please validate this thoroughly
-    const validateMeta = meta => meta && meta.element && meta.fragment;
+    const validateMeta = meta => meta && meta.element && meta.pagelet;
 
     // FIXME: Might not be necessary
     const nextTick = fn => setTimeout(fn, 0);
 
-    // FIXME: Either make that more router-y or use props or sth.
-    const matchesRoute = (meta, element) => meta.element === element;
-
     // FIXME: OMG, side-effects in a filter...
     const dispatchQueue = (state, meta) => {
         state.queue = state.queue.filter(({ element, next }) => {
-            if (matchesRoute(meta, element)) {
+            if (meta.element === element) {
                 nextTick(() => {
-                    requestWidget(state, element, next);
+                    requestPagelet(state, element, next);
                 });
                 return false;
             }
@@ -33,15 +30,15 @@ export function configureRuntime(loader, customElements, document, setTimeout) {
     // FIXME: Validation, validation, validation...
     const api = {
         declare: (meta) => {
-            console.log('router.declare', meta);
+            console.log('runtime.declare', meta);
 
             if (state.routes[meta.element]) {
-                console.error(`router.declare: "${meta.element}" is already defined`);
+                console.error(`runtime.declare: "${meta.element}" is already defined`);
                 return;
             }
 
             if (!validateMeta(meta)) {
-                console.error(`router.declare: meta for "${meta.element}" invalid`);
+                console.error(`runtime.declare: meta for "${meta.element}" invalid`);
                 return;
             }
 
@@ -52,7 +49,7 @@ export function configureRuntime(loader, customElements, document, setTimeout) {
             customElements.define(meta.element, class extends HTMLElement {
                 // FIXME: This should probably clean up after itself
                 connectedCallback() {
-                    requestWidget(state, meta.element, factory => (
+                    requestPagelet(state, meta.element, factory => (
                         factory(this)
                     ));
                 }
@@ -63,23 +60,23 @@ export function configureRuntime(loader, customElements, document, setTimeout) {
     };
 
     // TODO: This is actually not so bad but needs refinement
-    const requestWidget = (state, element, next) => {
-        console.log("requestWidget", element);
+    const requestPagelet = (state, element, next) => {
+        console.log("requestPagelet", element);
 
         const registration = state.routes[element];
         console.log("  registration", registration);
 
         if (!registration) {
-            console.warn(`router.requestWidget: widget not found`);
+            console.warn(`runtime.requestPagelet: widget not found`);
             state.queue.push({ timestamp: Date.now(), element, next });
 
-            console.log(`router.state`, state);
+            console.log(`runtime.state`, state);
             return;
         }
 
         const req = loader.require.config({
             paths: {
-                [registration.meta.element]: registration.meta.fragment.replace(/\.js$/, ''),
+                [registration.meta.element]: registration.meta.pagelet.replace(/\.js$/, ''),
             },
         });
 
