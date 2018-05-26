@@ -1,13 +1,12 @@
+// FIXME: OMG, please validate this thoroughly
+export const validateMeta = meta => meta && meta.element && meta.pagelet;
 
-export function configureRuntime(loader, customElements, setTimeout) {
+export function configureRuntime(configRequire, customElements, setTimeout) {
 
     const state = {
         elements: {},
         queue: [],
     };
-
-    // FIXME: OMG, please validate this thoroughly
-    const validateMeta = meta => meta && meta.element && meta.pagelet;
 
     // FIXME: OMG, side-effects in a filter...
     const dispatchQueue = (state, meta) => {
@@ -70,13 +69,13 @@ export function configureRuntime(loader, customElements, setTimeout) {
             return;
         }
 
-        const req = loader.require.config({
+        const require = configRequire({
             paths: {
                 [registration.meta.element]: registration.meta.pagelet.replace(/\.js$/, ''),
             },
         });
 
-        req([registration.meta.element], next);
+        require([registration.meta.element], next);
     };
 
     return api;

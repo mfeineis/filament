@@ -5,12 +5,14 @@ import "../polyfills/custom-event.js";
 import "isomorphic-fetch";
 
 import Rye from "rye-core";
-import "rye-suggestions";
-import "rye-user-profile";
 
-// To include the actual pagelet into the initial payload we just
+// To include an actual pagelet into the initial payload we just
 // pull the file and everything should work seamlessly
+
+import "rye-suggestions";
 //import "rye-suggestions.pagelet";
+import "rye-user-profile";
+//import "rye-user-profile.pagelet";
 
 import { setup } from "./bootstrap";
 

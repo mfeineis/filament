@@ -2,8 +2,6 @@ import { provide } from "rye-pagelet";
 
 import { Elm } from "../dist/elm";
 
-export const PAGELET_NAME = "rye-suggestions";
-
 export const factory = root => {
     //const document = root.ownerDocument;
     //root.innerHTML = "<pre>rye-suggestions bla</pre>";
@@ -31,4 +29,4 @@ export const factory = root => {
     //));
 };
 
-provide(PAGELET_NAME, factory);
+provide("rye-suggestions", factory);
