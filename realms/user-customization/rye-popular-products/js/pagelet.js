@@ -1,6 +1,8 @@
 import { map, pick, pipe, reduce } from "ramda";
 import { provide } from "rye-pagelet";
 
+import m from "mithril";
+
 const getProps = pipe(
     map(pick(["name", "value"])),
     reduce((acc, { name, value }) => {
@@ -10,14 +12,14 @@ const getProps = pipe(
 );
 
 export const factory = root => {
-    const props = getProps(root.attributes);
-    console.log("rye-user-profile.props", props);
-
     const document = root.ownerDocument;
 
-    const tmpl = document.createElement("template");
-    tmpl.innerHTML = "<pre>User Profile powered by Vanilla JS</pre>";
-    root.appendChild(tmpl.content);
+    const props = getProps(root.attributes);
+    console.log("rye-popular-products.props", props);
+
+    const div = document.createElement("pre");
+    root.appendChild(div);
+    m.render(div, "Popular Products powered by Mithril!");
 };
 
-provide("rye-user-profile", factory);
+provide("rye-popular-products", factory);

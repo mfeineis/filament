@@ -22,10 +22,16 @@ const repoConfig = ({ rootDir }) => ({
     resolve: {
         alias: {
             "rye-core": path.resolve(rootDir, "../../rye-core"),
+            "rye-friendlist": path.resolve(rootDir, "../../pagelets/rye-friendlist"),
+            "rye-friendlist.pagelet": path.resolve(rootDir, "../../pagelets/rye-friendlist.pagelet"),
+            "rye-popular-products": path.resolve(rootDir, "../../pagelets/rye-popular-products"),
+            "rye-popular-products.pagelet": path.resolve(rootDir, "../../pagelets/rye-popular-products.pagelet"),
             "rye-suggestions": path.resolve(rootDir, "../../pagelets/rye-suggestions"),
             "rye-suggestions.pagelet": path.resolve(rootDir, "../../pagelets/rye-suggestions.pagelet"),
             "rye-user-profile": path.resolve(rootDir, "../../pagelets/rye-user-profile"),
             "rye-user-profile.pagelet": path.resolve(rootDir, "../../pagelets/rye-user-profile.pagelet"),
+            "rye-weather": path.resolve(rootDir, "../../pagelets/rye-weather"),
+            "rye-weather.pagelet": path.resolve(rootDir, "../../pagelets/rye-weather.pagelet"),
         },
     },
 });

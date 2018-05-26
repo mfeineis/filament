@@ -3,11 +3,13 @@ import { provide } from "rye-pagelet";
 import { Elm } from "../dist/elm";
 
 export const factory = root => {
-    //const document = root.ownerDocument;
+    const document = root.ownerDocument;
     //root.innerHTML = "<pre>rye-suggestions bla</pre>";
 
     // FIXME: How would the interop work with Elm through the custom element?
-    const app = Elm.Main.embed(root, {});
+    const div = document.createElement("div");
+    root.appendChild(div);
+    const app = Elm.Main.embed(div, {});
 
     //const it = document.createElement("div");
     //it.setAttribute("data-pagelet", "true");
