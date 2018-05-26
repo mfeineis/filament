@@ -2157,7 +2157,7 @@ var requirejs, require, define;
 }(this, (typeof setTimeout === 'undefined' ? undefined : setTimeout)));
 
     return {
-        define: define,
-        require: require
+        add: define,
+        use: require
     };
 }());

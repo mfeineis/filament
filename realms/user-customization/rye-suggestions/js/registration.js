@@ -1,14 +1,14 @@
 /* global fetch, window */
-import { register } from "rye-pagelet-registry";
+import { enhance } from "rye-pagelet-registry";
 
 // FIXME: This could be generated or rather be used to generate
 //        the final artifact. How do we make sure there is no
 //        reference to the "real" widget in here?
-register(({ declare }) => (
+enhance(({ define }) => (
 
     // FIXME: Refine the API, do we need the explicit pagelet with a somewhat
     //        central pagelet registry?
-    declare({
+    define({
         element: "rye-suggestions",
         // FIXME: The initial API call should be used eventually
         init: ({ userId }) => (

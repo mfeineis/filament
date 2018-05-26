@@ -1,8 +1,8 @@
-import { register } from "rye-pagelet-registry";
+import { enhance } from "rye-pagelet-registry";
 
-register(({ declare }) => (
+enhance(({ define }) => (
 
-    declare({
+    define({
         element: "rye-user-profile",
         pagelet: "/pagelets/rye-user-profile.pagelet.js",
     })

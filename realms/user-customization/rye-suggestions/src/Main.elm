@@ -35,4 +35,4 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    Html.pre [] [ Html.text "rye-suggestions powered by Elm" ]
+    Html.pre [] [ Html.text "Suggestions powered by Elm" ]

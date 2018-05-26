@@ -19,7 +19,7 @@ export const factory = root => {
 
     const div = document.createElement("pre");
     root.appendChild(div);
-    m.render(div, "Popular Products powered by Mithril!");
+    m.render(div, "Popular Products powered by Mithril");
 };
 
 provide("rye-popular-products", factory);

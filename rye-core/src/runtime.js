@@ -1,7 +1,7 @@
 // FIXME: OMG, please validate this thoroughly
 export const validateMeta = meta => meta && meta.element && meta.pagelet;
 
-export function configureRuntime(configRequire, customElements, setTimeout) {
+export function configureRuntime(configureLoader, customElements, setTimeout) {
 
     const state = {
         elements: {},
@@ -12,9 +12,7 @@ export function configureRuntime(configRequire, customElements, setTimeout) {
     const dispatchQueue = (state, meta) => {
         state.queue = state.queue.filter(({ element, next }) => {
             if (meta.element === element) {
-                setTimeout(() => (
-                    requestPagelet(state, element, next)
-                ), 0);
+                setTimeout(() => requestPagelet(state, element, next), 0);
                 return false;
             }
 
@@ -24,7 +22,7 @@ export function configureRuntime(configRequire, customElements, setTimeout) {
 
     // FIXME: Validation, validation, validation...
     const api = {
-        declare: (meta) => {
+        define: (meta) => {
             console.log('runtime.declare', meta);
 
             if (state.elements[meta.element]) {
@@ -77,13 +75,13 @@ export function configureRuntime(configRequire, customElements, setTimeout) {
             return;
         }
 
-        const require = configRequire({
+        const use = configureLoader({
             paths: {
                 [registration.meta.element]: registration.meta.pagelet.replace(/\.js$/, ''),
             },
         });
 
-        require([registration.meta.element], next);
+        use([registration.meta.element], next);
     };
 
     return api;

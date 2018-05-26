@@ -20,6 +20,6 @@ export const provide = (name, factory) => {
         ].join(" "));
     }
 
-    Rye.define(name, [], () => factory);
+    Rye.add(name, [], () => factory);
 };
 

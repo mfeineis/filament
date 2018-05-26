@@ -22,7 +22,7 @@ export const factory = root => {
 
     const app = new Vue({
         data: {
-            message: "Weather powered by Vue!",
+            message: "Weather powered by Vue",
         },
         el: div,
         render(h) {

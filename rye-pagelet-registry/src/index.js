@@ -1,6 +1,6 @@
 /* global Rye */
 
-export const register = factory => {
+export const enhance = factory => {
 
     // FIXME: These validation checks should not be in the PROD build
     if (typeof factory !== "function" || factory.length < 1) {
@@ -10,6 +10,6 @@ export const register = factory => {
         ].join(" "));
     }
 
-    Rye.require(["rye-core/runtime/v1"], factory);
+    Rye.use(["rye-core/runtime/v1"], factory);
 };
 
