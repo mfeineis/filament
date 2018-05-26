@@ -44,6 +44,14 @@ export function configureRuntime(configRequire, customElements, setTimeout) {
             customElements.define(meta.element, class extends HTMLElement {
                 // FIXME: This should probably clean up after itself
                 connectedCallback() {
+                    // FIXME
+                    // Should we provide a default loading indicator
+                    // for the time it takes to load the pagelet.
+                    // A placeholder would be better but how does
+                    // the loader know what to display? Maybe this is
+                    // something a registration could provide optionally.
+                    // After the pagelet factory is called the pagelet
+                    // itself can take over.
                     requestPagelet(state, meta.element, factory => (
                         factory(this)
                     ));
