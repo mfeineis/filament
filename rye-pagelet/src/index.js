@@ -8,7 +8,7 @@ const reserved = {
     "rye-pagelet-registry": true,
 };
 
-export const define = (name, factory) => {
+export const provide = (name, factory) => {
 
     if (typeof name !== "string" || !/rye-[\w]+/.test(name) || name in reserved) {
         throw new Error("Pagelet name is not defined or invalid.");

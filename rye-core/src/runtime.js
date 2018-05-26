@@ -1,25 +1,21 @@
 
-export function configureRuntime(loader, customElements, document, setTimeout) {
+export function configureRuntime(loader, customElements, setTimeout) {
 
     const state = {
-        guid: 0,
+        elements: {},
         queue: [],
-        routes: {},
     };
 
     // FIXME: OMG, please validate this thoroughly
     const validateMeta = meta => meta && meta.element && meta.pagelet;
 
-    // FIXME: Might not be necessary
-    const nextTick = fn => setTimeout(fn, 0);
-
     // FIXME: OMG, side-effects in a filter...
     const dispatchQueue = (state, meta) => {
         state.queue = state.queue.filter(({ element, next }) => {
             if (meta.element === element) {
-                nextTick(() => {
-                    requestPagelet(state, element, next);
-                });
+                setTimeout(() => (
+                    requestPagelet(state, element, next)
+                ), 0);
                 return false;
             }
 
@@ -32,7 +28,7 @@ export function configureRuntime(loader, customElements, document, setTimeout) {
         declare: (meta) => {
             console.log('runtime.declare', meta);
 
-            if (state.routes[meta.element]) {
+            if (state.elements[meta.element]) {
                 console.error(`runtime.declare: "${meta.element}" is already defined`);
                 return;
             }
@@ -42,7 +38,7 @@ export function configureRuntime(loader, customElements, document, setTimeout) {
                 return;
             }
 
-            state.routes[meta.element] = {
+            state.elements[meta.element] = {
                 meta,
             };
 
@@ -63,7 +59,7 @@ export function configureRuntime(loader, customElements, document, setTimeout) {
     const requestPagelet = (state, element, next) => {
         console.log("requestPagelet", element);
 
-        const registration = state.routes[element];
+        const registration = state.elements[element];
         console.log("  registration", registration);
 
         if (!registration) {

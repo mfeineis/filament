@@ -1,14 +1,14 @@
 
 export function setup(window, document) {
 
-    const it = document.createElement("rye-suggestions");
-    it.setAttribute("userId", "katara");
+    const suggestion = document.createElement("rye-suggestions");
+    suggestion.setAttribute("userId", "katara");
 
-    document.querySelector("body").appendChild(it);
+    document.querySelector("body").appendChild(suggestion);
 
-    const it2 = document.createElement("rye-suggestions");
-    it2.setAttribute("userId", "aang");
+    const profile = document.createElement("rye-user-profile");
+    profile.setAttribute("userId", "aang");
 
-    document.querySelector("body").appendChild(it2);
+    document.querySelector("body").appendChild(profile);
 }
 

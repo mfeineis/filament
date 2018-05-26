@@ -6,6 +6,7 @@ import "isomorphic-fetch";
 
 import Rye from "rye-core";
 import "rye-suggestions";
+import "rye-user-profile";
 
 // To include the actual pagelet into the initial payload we just
 // pull the file and everything should work seamlessly

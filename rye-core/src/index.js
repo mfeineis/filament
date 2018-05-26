@@ -1,12 +1,12 @@
 import { loader } from "./loader";
 import { configureRuntime } from "./runtime";
 
-const { customElements, document, setTimeout } = window;
-const runtime = configureRuntime(loader, customElements, document, setTimeout);
+const { customElements, setTimeout } = window;
+const runtime = configureRuntime(loader, customElements, setTimeout);
 
 const Api = loader;
 
-// Providing the runtime dependency 
+// Providing the runtime dependency
 Api.define("rye-core/runtime/v1", [], () => runtime);
 
 if (typeof window !== "undefined") {

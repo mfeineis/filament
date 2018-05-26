@@ -24,6 +24,8 @@ const repoConfig = ({ rootDir }) => ({
             "rye-core": path.resolve(rootDir, "../../rye-core"),
             "rye-suggestions": path.resolve(rootDir, "../../pagelets/rye-suggestions"),
             "rye-suggestions.pagelet": path.resolve(rootDir, "../../pagelets/rye-suggestions.pagelet"),
+            "rye-user-profile": path.resolve(rootDir, "../../pagelets/rye-user-profile"),
+            "rye-user-profile.pagelet": path.resolve(rootDir, "../../pagelets/rye-user-profile.pagelet"),
         },
     },
 });
