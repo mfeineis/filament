@@ -2,16 +2,10 @@
 
 // FIXME: This validation should not be in the PROD build
 
-const reserved = {
-    "rye-core": true,
-    "rye-pagelet": true,
-    "rye-pagelet-registry": true,
-};
-
 export const provide = (name, factory) => {
 
-    if (typeof name !== "string" || !/rye-[\w]+/.test(name) || name in reserved) {
-        throw new Error("Pagelet name is not defined or invalid.");
+    if (typeof name !== "string" || /^rye/.test(name) || !/\w+-[^-]+/.test(name)) {
+        throw new Error(`Pagelet name "${name}" is not defined or invalid.`);
     }
 
     if (typeof factory !== "function" || factory.length < 1) {

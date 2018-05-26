@@ -22,16 +22,16 @@ const repoConfig = ({ rootDir }) => ({
     resolve: {
         alias: {
             "rye-core": path.resolve(rootDir, "../../rye-core"),
-            "rye-friendlist": path.resolve(rootDir, "../../pagelets/rye-friendlist"),
-            "rye-friendlist.pagelet": path.resolve(rootDir, "../../pagelets/rye-friendlist.pagelet"),
-            "rye-popular-products": path.resolve(rootDir, "../../pagelets/rye-popular-products"),
-            "rye-popular-products.pagelet": path.resolve(rootDir, "../../pagelets/rye-popular-products.pagelet"),
-            "rye-suggestions": path.resolve(rootDir, "../../pagelets/rye-suggestions"),
-            "rye-suggestions.pagelet": path.resolve(rootDir, "../../pagelets/rye-suggestions.pagelet"),
-            "rye-user-profile": path.resolve(rootDir, "../../pagelets/rye-user-profile"),
-            "rye-user-profile.pagelet": path.resolve(rootDir, "../../pagelets/rye-user-profile.pagelet"),
-            "rye-weather": path.resolve(rootDir, "../../pagelets/rye-weather"),
-            "rye-weather.pagelet": path.resolve(rootDir, "../../pagelets/rye-weather.pagelet"),
+            "acme-friendlist": path.resolve(rootDir, "../../pagelets/acme-friendlist"),
+            "acme-friendlist.pagelet": path.resolve(rootDir, "../../pagelets/acme-friendlist.pagelet"),
+            "acme-popular-products": path.resolve(rootDir, "../../pagelets/acme-popular-products"),
+            "acme-popular-products.pagelet": path.resolve(rootDir, "../../pagelets/acme-popular-products.pagelet"),
+            "acme-suggestions": path.resolve(rootDir, "../../pagelets/acme-suggestions"),
+            "acme-suggestions.pagelet": path.resolve(rootDir, "../../pagelets/acme-suggestions.pagelet"),
+            "acme-user-profile": path.resolve(rootDir, "../../pagelets/acme-user-profile"),
+            "acme-user-profile.pagelet": path.resolve(rootDir, "../../pagelets/acme-user-profile.pagelet"),
+            "acme-weather": path.resolve(rootDir, "../../pagelets/acme-weather"),
+            "acme-weather.pagelet": path.resolve(rootDir, "../../pagelets/acme-weather.pagelet"),
         },
     },
 });
@@ -82,7 +82,7 @@ module.exports = (env = {}, argv = {}) => {
         },
         devConfig(settings),
         {
-            entry: path.resolve(settings.rootDir, "./src/main"),
+            entry: path.resolve(settings.rootDir, "./js/main"),
             output: {
                 filename: "[name].js?[hash:13]",
                 path: path.resolve(settings.rootDir, "./dist"),
@@ -92,26 +92,8 @@ module.exports = (env = {}, argv = {}) => {
         { mode: env.mode }
     );
 
-    //const suggestionsConfig = merge.smart(
-    //    widgetConfig(settings),
-    //    devConfig(settings),
-    //    {
-    //        entry: path.resolve(settings.rootDir, "./src/suggestions.widget"),
-    //        output: {
-    //            filename: "rye-suggestions.js?[hash:13]",
-    //            path: path.resolve(settings.rootDir, "./dist"),
-    //        },
-    //    },
-    //    { mode: env.mode }
-    //);
+    console.log('webpack.config', appConfig);
 
-    const result = [
-        appConfig,
-        //suggestionsConfig,
-    ];
-
-    console.log('webpack.config', result);
-
-    return result;
+    return appConfig;
 };
 
