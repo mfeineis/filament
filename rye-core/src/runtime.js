@@ -92,10 +92,9 @@ export function configureRuntime(configureLoader, customElements, document, setT
 
     // TODO: This is actually not so bad but needs refinement
     const requestPagelet = (element, next) => {
-        console.log("requestPagelet", element);
-
         const registration = state.elements[element];
-        console.log("  registration", registration);
+
+        console.log("requestPagelet", element, registration);
 
         if (!registration) {
             console.warn(`runtime.requestPagelet: widget not found`);
