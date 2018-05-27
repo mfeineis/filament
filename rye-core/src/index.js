@@ -1,8 +1,8 @@
 import { loader } from "./loader";
 import { configureRuntime } from "./runtime";
 
-const { customElements, document, setTimeout } = window;
-const runtime = configureRuntime(loader.use.config, customElements, document, setTimeout);
+const { customElements, setTimeout } = window;
+const runtime = configureRuntime(loader.use.config, customElements, setTimeout);
 
 const Api = loader;
 
