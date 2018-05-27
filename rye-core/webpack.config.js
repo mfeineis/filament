@@ -49,7 +49,7 @@ module.exports = (env = {}, argv = {}) => {
         },
         devConfig(settings),
         {
-            entry: path.resolve(settings.rootDir, "./src"),
+            entry: path.resolve(settings.rootDir, "./js"),
             output: {
                 // FIXME: UMD library target?
                 filename: "rye-core.js?[hash:13]",
