@@ -22,7 +22,6 @@
     "webpack-merge": "^4.1.2"
   },
   "dependencies": {
-    "ramda": "^0.25.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0"
   }

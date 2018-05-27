@@ -1,7 +1,7 @@
 // FIXME: OMG, please validate this thoroughly
 export const validateMeta = meta => meta && meta.element && meta.pagelet;
 
-export function configureRuntime(configureLoader, customElements, setTimeout) {
+export function configureRuntime(configureLoader, customElements, document, setTimeout) {
 
     const state = {
         elements: {},
@@ -34,11 +34,31 @@ export function configureRuntime(configureLoader, customElements, setTimeout) {
             return;
         }
 
+        meta.observe = meta.observe || [];
+
         state.elements[meta.element] = {
             meta,
         };
 
         customElements.define(meta.element, class extends HTMLElement {
+            static get observedAttributes() {
+                return meta.observe;
+            }
+
+            constructor() {
+                super();
+
+                this.proxy = null;
+            }
+
+            adoptedCallback() {
+                this.proxy && this.proxy.adopted && this.proxy.adopted.call(this);
+            }
+
+            attributeChangedCallback(name, oldValue, newValue) {
+                this.proxy && this.proxy.attributeChanged && this.proxy.attributeChanged.call(this, name, oldValue, newValue);
+            }
+
             // FIXME: This should probably clean up after itself
             connectedCallback() {
                 // FIXME
@@ -49,9 +69,21 @@ export function configureRuntime(configureLoader, customElements, setTimeout) {
                 // something a registration could provide optionally.
                 // After the pagelet factory is called the pagelet
                 // itself can take over.
-                requestPagelet(meta.element, factory => (
-                    factory(this)
-                ));
+                requestPagelet(meta.element, factory => {
+                    const attrs = {};
+
+                    for (let name of meta.observe) {
+                        attrs[name] = this.getAttribute(name);
+                    }
+
+                    // The factory itself acts as the `conntectedCallback`
+                    this.proxy = factory(this, attrs);
+                });
+            }
+
+            disconnectedCallback() {
+                this.proxy && this.proxy.disconnected && this.proxy.disconnected.call(this);
+                this.proxy = null;
             }
         });
 

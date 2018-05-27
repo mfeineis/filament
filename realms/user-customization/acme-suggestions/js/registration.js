@@ -18,6 +18,7 @@ enhance(({ define }) => (
                 },
             }).then(it => it.json())
         ),
+        observe: ["userid"],
         pagelet: "/pagelets/acme-suggestions.pagelet.js",
     })
 

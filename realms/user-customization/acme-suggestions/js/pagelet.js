@@ -2,14 +2,23 @@ import { provide } from "rye-pagelet";
 
 import { Elm } from "../dist/elm";
 
-export const factory = root => {
-    const document = root.ownerDocument;
+export const factory = (host, attrs) => {
+    console.log("acme-suggestions.connected", host, attrs);
+
+    const document = host.ownerDocument;
     //root.innerHTML = "<pre>rye-suggestions bla</pre>";
 
     // FIXME: How would the interop work with Elm through the custom element?
     const div = document.createElement("div");
-    root.appendChild(div);
+    host.appendChild(div);
     const app = Elm.Main.embed(div, {});
+
+    return {
+        attributeChanged(name, oldValue, newValue) {
+            console.log("acme-suggestions.attributeChanged", this, name, oldValue, newValue);
+            // app.ports.somePort.send(...)
+        },
+    };
 
     //const it = document.createElement("div");
     //it.setAttribute("data-pagelet", "true");
