@@ -1,4 +1,4 @@
-import { provide } from "rye-pagelet";
+/* global Rye */
 
 export const factory = (host, attrs) => {
     console.log("acme-user-profile.props", host, attrs);
@@ -10,4 +10,5 @@ export const factory = (host, attrs) => {
     host.appendChild(tmpl.content);
 };
 
-provide("acme-user-profile", factory);
+Rye.provide("acme-user-profile", factory);
+

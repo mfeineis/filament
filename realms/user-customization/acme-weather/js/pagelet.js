@@ -1,6 +1,6 @@
-import Vue from "vue";
+/* global Rye */
 
-import { provide } from "rye-pagelet";
+import Vue from "vue";
 
 export const factory = (host, attrs) => {
     console.log("acme-weather.attrs", host, attrs);
@@ -20,4 +20,5 @@ export const factory = (host, attrs) => {
     });
 };
 
-provide("acme-weather", factory);
+Rye.provide("acme-weather", factory);
+

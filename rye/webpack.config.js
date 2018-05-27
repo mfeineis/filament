@@ -49,11 +49,10 @@ module.exports = (env = {}, argv = {}) => {
         },
         devConfig(settings),
         {
-            entry: path.resolve(settings.rootDir, "./src"),
-            // FIXME: Include "rye-core" as external dependency not to be bundled?
+            entry: path.resolve(settings.rootDir, "./js"),
             output: {
                 // FIXME: UMD library target?
-                filename: "rye-pagelet-registry.js?[hash:13]",
+                filename: "rye.js?[hash:13]",
                 path: path.resolve(settings.rootDir, "./dist"),
             },
         },

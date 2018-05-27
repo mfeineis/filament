@@ -4,7 +4,7 @@ import "../polyfills/custom-elements.js";
 import "../polyfills/custom-event.js";
 import "isomorphic-fetch";
 
-import Rye from "rye-core";
+import Rye from "rye";
 
 // To include an actual pagelet into the initial payload we just
 // pull the file and everything should work seamlessly

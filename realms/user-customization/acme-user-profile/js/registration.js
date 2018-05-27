@@ -1,11 +1,7 @@
-import { enhance } from "rye-pagelet-registry";
+/* global Rye */
 
-enhance(({ define }) => (
+Rye.declare("acme-user-profile", {
+    observe: ["userid"],
+    pagelet: "/pagelets/acme-user-profile.pagelet.js",
+});
 
-    define({
-        element: "acme-user-profile",
-        observe: ["userid"],
-        pagelet: "/pagelets/acme-user-profile.pagelet.js",
-    })
-
-));

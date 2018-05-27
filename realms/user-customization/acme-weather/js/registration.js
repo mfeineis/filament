@@ -1,11 +1,7 @@
-import { enhance } from "rye-pagelet-registry";
+/* global Rye */
 
-enhance(({ define }) => (
+Rye.declare("acme-weather", {
+    observe: ["userid"],
+    pagelet: "/pagelets/acme-weather.pagelet.js",
+});
 
-    define({
-        element: "acme-weather",
-        observe: ["userid"],
-        pagelet: "/pagelets/acme-weather.pagelet.js",
-    })
-
-));

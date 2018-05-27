@@ -1,11 +1,6 @@
-import { enhance } from "rye-pagelet-registry";
+/* global Rye */
 
-enhance(({ define }) => (
-
-    define({
-        element: "acme-popular-products",
-        observe: ["userid"],
-        pagelet: "/pagelets/acme-popular-products.pagelet.js",
-    })
-
-));
+Rye.declare("acme-popular-products", {
+    observe: ["userid"],
+    pagelet: "/pagelets/acme-popular-products.pagelet.js",
+});

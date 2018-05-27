@@ -21,7 +21,7 @@ const repoConfig = ({ rootDir }) => ({
     //],
     resolve: {
         alias: {
-            "rye-core": path.resolve(rootDir, "../../rye-core"),
+            "rye": path.resolve(rootDir, "../../rye"),
             "acme-friendlist": path.resolve(rootDir, "../../pagelets/acme-friendlist"),
             "acme-friendlist.pagelet": path.resolve(rootDir, "../../pagelets/acme-friendlist.pagelet"),
             "acme-popular-products": path.resolve(rootDir, "../../pagelets/acme-popular-products"),

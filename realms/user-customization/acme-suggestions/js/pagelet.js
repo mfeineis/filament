@@ -1,4 +1,4 @@
-import { provide } from "rye-pagelet";
+/* global Rye */
 
 import { Elm } from "../dist/elm";
 
@@ -40,4 +40,4 @@ export const factory = (host, attrs) => {
     //));
 };
 
-provide("acme-suggestions", factory);
+Rye.provide("acme-suggestions", factory);

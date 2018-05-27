@@ -56,14 +56,6 @@ module.exports = (env = {}, argv = {}) => {
             output: {
                 filename: "acme-weather.js?[hash:13]",
             },
-            resolve: {
-                alias: {
-                    "rye-pagelet-registry": path.resolve(
-                        settings.rootDir,
-                        "../../../rye-pagelet-registry"
-                    ),
-                },
-            },
         },
         modeConfig(settings)
     );
@@ -75,14 +67,6 @@ module.exports = (env = {}, argv = {}) => {
             entry: path.resolve(settings.rootDir, "./js/pagelet"),
             output: {
                 filename: "acme-weather.pagelet.js?[hash:13]",
-            },
-            resolve: {
-                alias: {
-                    "rye-pagelet": path.resolve(
-                        settings.rootDir,
-                        "../../../rye-pagelet"
-                    ),
-                },
             },
         },
         modeConfig(settings)

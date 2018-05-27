@@ -21,7 +21,7 @@ export function configureRuntime(configureLoader, customElements, setTimeout) {
     };
 
     // FIXME: Validation, validation, validation...
-    const define = meta => {
+    const declare = meta => {
         console.log('runtime.declare', meta);
 
         if (state.elements[meta.element]) {
@@ -114,7 +114,7 @@ export function configureRuntime(configureLoader, customElements, setTimeout) {
     };
 
     return {
-        define,
+        declare,
     };
 };
 

@@ -1,4 +1,4 @@
-import { provide } from "rye-pagelet";
+/* global Rye */
 
 import m from "mithril";
 
@@ -11,4 +11,4 @@ export const factory = (host, attrs)=> {
     m.render(div, "Popular Products powered by Mithril");
 };
 
-provide("acme-popular-products", factory);
+Rye.provide("acme-popular-products", factory);

@@ -1,4 +1,4 @@
-export const loader = (function (module) {
+const { add, use } = (function (module) {
     ////Define a require object here that has any
     ////default configuration you want for RequireJS. If
     ////you do not have any config options you want to set,
@@ -2158,6 +2158,11 @@ var requirejs, require, define;
 
     return {
         add: define,
-        use: require
+        use: require,
     };
 }());
+
+export {
+    add,
+    use,
+}
