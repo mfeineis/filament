@@ -33,14 +33,14 @@ const devConfig = ({ isDev }) => {
 module.exports = (env = {}, argv = {}) => {
     const NODE_ENV = argv.mode || process.env.NODE_ENV || "development";
 
-    // FIXME: Should "rye-core" really only be built in dev mode?
-    env.mode = "development";
-
     const settings = {
         env: NODE_ENV,
         isDev: NODE_ENV === "development",
+        isProd: NODE_ENV === "production",
         rootDir: __dirname,
     };
+
+    env.mode = NODE_ENV === "production" ? "production" : "development";
 
     const appConfig = merge.smart(
         {
