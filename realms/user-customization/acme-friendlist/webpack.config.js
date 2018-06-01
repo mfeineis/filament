@@ -48,11 +48,11 @@ module.exports = (env = {}, argv = {}) => {
 
     const modeConfig = () => ({ mode: env.mode });
 
-    const registrationConfig = merge.smart(
+    const declarationConfig = merge.smart(
         devConfig(settings),
         outputConfig(settings),
         {
-            entry: path.resolve(settings.rootDir, "./js/registration"),
+            entry: path.resolve(settings.rootDir, "./js/declaration"),
             output: {
                 filename: "acme-friendlist.js?[hash:13]",
             },
@@ -73,8 +73,8 @@ module.exports = (env = {}, argv = {}) => {
     );
 
     const finalConfig = [
+        declarationConfig,
         pageletConfig,
-        registrationConfig,
     ];
 
     console.log('webpack.config', finalConfig);
