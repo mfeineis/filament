@@ -40,6 +40,17 @@ export function configureRuntime(configureLoader, customElements, setTimeout) {
             meta,
         };
 
+        function connectPagelet(element, meta) {
+            const attrs = {};
+
+            for (let name of meta.observe) {
+                attrs[name] = element.getAttribute(name);
+            }
+
+            // The factory itself acts as the `conntectedCallback`
+            element.proxy = meta.factory.call(null, element, attrs);
+        };
+
         customElements.define(meta.element, class extends HTMLElement {
             static get observedAttributes() {
                 return meta.observe;
@@ -61,6 +72,13 @@ export function configureRuntime(configureLoader, customElements, setTimeout) {
 
             // FIXME: This should probably clean up after itself
             connectedCallback() {
+                if (meta.factory) {
+                    // Pagelet already loaded, short-circuiting to avoid
+                    // delay and flickering
+                    connectPagelet(this, meta);
+                    return;
+                }
+
                 // FIXME
                 // Should we provide a default loading indicator
                 // for the time it takes to load the pagelet.
@@ -70,14 +88,8 @@ export function configureRuntime(configureLoader, customElements, setTimeout) {
                 // After the pagelet factory is called the pagelet
                 // itself can take over.
                 requestPagelet(meta.element, factory => {
-                    const attrs = {};
-
-                    for (let name of meta.observe) {
-                        attrs[name] = this.getAttribute(name);
-                    }
-
-                    // The factory itself acts as the `conntectedCallback`
-                    this.proxy = factory(this, attrs);
+                    meta.factory = factory;
+                    connectPagelet(this, meta);
                 });
             }
 
@@ -92,11 +104,11 @@ export function configureRuntime(configureLoader, customElements, setTimeout) {
 
     // TODO: This is actually not so bad but needs refinement
     const requestPagelet = (element, next) => {
-        const registration = state.elements[element];
+        const declaration = state.elements[element];
 
         //console.log("requestPagelet", element, registration);
 
-        if (!registration) {
+        if (!declaration) {
             console.warn(`runtime.requestPagelet: widget not found`);
             state.queue.push({ timestamp: Date.now(), element, next });
 
@@ -104,13 +116,14 @@ export function configureRuntime(configureLoader, customElements, setTimeout) {
             return;
         }
 
+        // Good thing that requirejs is so configurable out of the box
         const use = configureLoader({
             paths: {
-                [registration.meta.element]: registration.meta.pagelet.replace(/\.js$/, ''),
+                [declaration.meta.element]: declaration.meta.pagelet.replace(/\.js$/, ''),
             },
         });
 
-        use([registration.meta.element], next);
+        use([declaration.meta.element], next);
     };
 
     return {
