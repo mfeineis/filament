@@ -40,7 +40,8 @@ module.exports = (env = {}, argv = {}) => {
         rootDir: __dirname,
     };
 
-    env.mode = NODE_ENV === "production" ? "production" : "development";
+    //env.mode = NODE_ENV === "production" ? "production" : "development";
+    env.mode = "development";
 
     const appConfig = merge.smart(
         {
