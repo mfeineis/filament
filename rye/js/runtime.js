@@ -63,11 +63,11 @@ export function configureRuntime(configureLoader, customElements, setTimeout) {
             }
 
             adoptedCallback() {
-                this.proxy && this.proxy.adopted && this.proxy.adopted.call(this);
+                this.proxy && this.proxy.adopted && this.proxy.adopted.call(null, this);
             }
 
             attributeChangedCallback(name, oldValue, newValue) {
-                this.proxy && this.proxy.attributeChanged && this.proxy.attributeChanged.call(this, name, oldValue, newValue);
+                this.proxy && this.proxy.attributeChanged && this.proxy.attributeChanged.call(null, this, name, oldValue, newValue);
             }
 
             // FIXME: This should probably clean up after itself
@@ -94,7 +94,7 @@ export function configureRuntime(configureLoader, customElements, setTimeout) {
             }
 
             disconnectedCallback() {
-                this.proxy && this.proxy.disconnected && this.proxy.disconnected.call(this);
+                this.proxy && this.proxy.disconnected && this.proxy.disconnected.call(null, this);
                 this.proxy = null;
             }
         });
