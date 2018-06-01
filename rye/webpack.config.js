@@ -20,6 +20,7 @@ const devConfig = ({ isDev }) => {
             hot: true,
             inline: true,
         },
+        devtool: "sourcemap",
         plugins: [
             new HtmlWebpackPlugin({
             }),

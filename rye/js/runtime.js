@@ -1,5 +1,5 @@
 // FIXME: OMG, please validate this thoroughly
-export const validateMeta = meta => meta && meta.element && meta.pagelet;
+export const validateMeta = meta => meta && meta["element"] && meta["pagelet"];
 
 export function configureRuntime(configureLoader, customElements, setTimeout) {
 

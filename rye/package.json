@@ -6,6 +6,7 @@
   "main": "dist/rye.js",
   "scripts": {
     "build": "NODE_ENV=production $(npm bin)/webpack --progress",
+    "build-rollup": "$(npm bin)/rollup ./js/index.js --o ./dist/rye-debug.js --f iife && $(npm bin)/google-closure-compiler --js ./dist/rye-debug.js --compilation_level ADVANCED --js_output_file ./dist/rye.js",
     "start": "NODE_ENV=development nodemon --watch webpack.config.js $(npm bin)/webpack-dev-server --progress",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,10 +14,12 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.19",
+    "google-closure-compiler": "^20180506.0.0",
     "html-webpack-externals-plugin": "^3.8.0",
     "html-webpack-plugin": "^3.2.0",
     "isomorphic-fetch": "^2.2.1",
     "nodemon": "^1.17.4",
+    "rollup": "^0.59.4",
     "webpack": "^4.8.3",
     "webpack-cli": "^2.1.3",
     "webpack-dev-server": "^3.1.4",
