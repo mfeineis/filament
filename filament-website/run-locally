@@ -22,7 +22,14 @@ cd $BASEDIR
 cd design/ && ./build && cd ../
 
 echo "Building fragments..."
+
+echo "... flmnt-getstarted"
 cd $BASEDIR
+cd getstarted/ && npm install && npm run build
+
+echo "... flmnt-hello"
+cd $BASEDIR
+cd hello/ && npm install && npm run build
 
 echo "Setting up the homepage..."
 cd $BASEDIR

@@ -18,6 +18,10 @@ const baseConfig = ({ rootDir }) => ({
     resolve: {
         alias: {
             filament: path.resolve(rootDir, "../../filament/"),
+            "flmnt-getstarted": path.resolve(rootDir, "../cdn/fragments/flmnt-getstarted.js"),
+            "flmnt-getstarted.fragment": path.resolve(rootDir, "../cdn/fragments/flmnt-getstarted.fragment.js"),
+            "flmnt-hello": path.resolve(rootDir, "../cdn/fragments/flmnt-hello.js"),
+            "flmnt-hello.fragment": path.resolve(rootDir, "../cdn/fragments/flmnt-hello.fragment.js"),
         },
     },
 });

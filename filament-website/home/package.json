@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "NODE_ENV=production npm run elm-prepare && npm run elm-build && $(npm bin)/webpack --progress --env.verbose",
-    "elm-build": "elm make src/Filament/Home.elm --optimize --output ./dist/app.js",
+    "elm-build": "elm make src/Filament/Home.elm --output ./dist/app.js",
     "elm-build-debug": "elm make src/Filament/Home.elm --output ./dist/app.js",
     "elm-prepare": "cp ../private/elm $(npm bin)/elm",
     "start": "npm run elm-build && NODE_ENV=development nodemon --watch webpack.config.js $(npm bin)/webpack-dev-server --progress --host=0.0.0.0 --port=8081 --env.verbose",

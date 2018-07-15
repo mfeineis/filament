@@ -2,6 +2,11 @@ import IntlElements from "intl-elements";
 import "filament";
 import { Elm } from "../dist/app.js";
 
+import "flmnt-getstarted";
+//import "flmnt-getstarted.fragment";
+import "flmnt-hello";
+//import "flmnt-hello.fragment";
+
 const i18nKey = IntlElements.defineContext({
     defaultLocale: "en-US",
     defaultMessages: {

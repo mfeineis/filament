@@ -26,13 +26,6 @@ subscriptions _ =
     Sub.none
 
 
-routeIt : Url -> Model -> ( Model, Cmd Msg )
-routeIt url model =
-    case url.fragment of
-        _ ->
-            ( { model | route = Home }, Cmd.none )
-
-
 type alias Flags =
     { i18nKey : Intl.ContextKey
     }
@@ -56,11 +49,25 @@ init flags url navKey =
                 , navKey = navKey
                 , route = Home
                 }
-                |> (\(m, cmds) -> ( Valid m, cmds ))
+                |> (\( m, cmds ) -> ( Valid m, cmds ))
 
 
 type Route
     = Home
+    | GetStarted
+
+
+routeIt : Url -> Model -> ( Model, Cmd Msg )
+routeIt url model =
+    case Maybe.withDefault "home" url.fragment of
+        "getstarted" ->
+            ( { model | route = GetStarted }, Cmd.none )
+
+        "home" ->
+            ( { model | route = Home }, Cmd.none )
+
+        _ ->
+            ( { model | route = Home }, Cmd.none )
 
 
 type Msg
@@ -120,6 +127,9 @@ view appModel =
     let
         viewValid ({ route } as model) =
             case model.route of
+                GetStarted ->
+                    viewGetStarted model
+
                 Home ->
                     viewHome model
     in
@@ -135,13 +145,31 @@ view appModel =
             viewValid model
 
 
+viewGetStarted : Model -> Browser.Document Msg
+viewGetStarted model =
+    { title = "Getting Started - filamentjs"
+    , body =
+        [ Intl.context model.i18nKey
+            [ Intl.text (t Welcome)
+            , Html.div []
+                [ Html.node "flmnt-getstarted" [] []
+                ]
+            , Html.node "flmnt-hello" [] []
+            ]
+        ]
+    }
+
+
 viewHome : Model -> Browser.Document Msg
 viewHome model =
     { title = "Home - filamentjs"
     , body =
         [ Intl.context model.i18nKey
             [ Intl.text (t Welcome)
-            , Html.text " to Filament.Home"
+            , Html.div []
+                [ Html.text " to Filament.Home"
+                ]
+            , Html.node "flmnt-hello" [] []
             ]
         ]
     }

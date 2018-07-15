@@ -1,0 +1,20 @@
+{
+  "name": "flmnt-hello",
+  "version": "0.1.0",
+  "private": true,
+  "description": "",
+  "scripts": {
+    "build": "npm run elm-prepare && npm run elm-build && NODE_ENV=production $(npm bin)/webpack --progress",
+    "elm-build": "elm make ./src/App/Hello.elm --output ./dist/app.js",
+    "elm-prepare": "cp ../private/elm $(npm bin)/elm",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "NODE_ENV=development $(npm bin)/webpack --progress --watch"
+  },
+  "author": "Martin Feineis",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "webpack": "^4.16.0",
+    "webpack-cli": "^3.0.8",
+    "webpack-merge": "^4.1.3"
+  }
+}
