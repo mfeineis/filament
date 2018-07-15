@@ -1,0 +1,32 @@
+#!/bin/bash
+
+BASEDIR="$PWD"
+BASEDIRNAME=${PWD##*/}
+
+echo "Setting up '$BASEDIRNAME' in $BASEDIR..."
+
+echo "Preparing libraries..."
+cd ../filament/ && npm install && npm run build
+
+echo "Setting up mock CDN..."
+cd $BASEDIR
+mkdir -p cdn/design/
+mkdir -p cdn/fragments/
+
+echo "Building 'intl-elements'..."
+cd $BASEDIR
+cd ../../intl-elements/ && npm install && npm run build
+
+echo "Setting up CI design system..."
+cd $BASEDIR
+cd design/ && ./build && cd ../
+
+echo "Building fragments..."
+cd $BASEDIR
+
+echo "Setting up the homepage..."
+cd $BASEDIR
+cd home/ && npm install && npm start
+
+cd $BASEDIR
+echo "Done."

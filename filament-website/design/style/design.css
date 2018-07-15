@@ -1,0 +1,23 @@
+:root {
+    --primary: #00aa00;
+    --font-size: 16px;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    background-color: #eee;
+    border-top: var(--primary) 3px solid;
+    font-size: var(--font-size);
+    margin: 0;
+    min-height: calc(100vh - 3px);
+}
+
+@media all and (min-width: 0) and (max-width: 600px) {
+    body {
+        --font-size: 14px;
+    }
+}
+
