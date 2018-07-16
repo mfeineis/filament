@@ -27,7 +27,7 @@ type Msg
 
 
 type alias Model =
-    { i18nKey : Maybe Intl.ContextKey
+    { i18nKey : Intl.ContextKey
     }
 
 
@@ -37,6 +37,7 @@ init flags =
         i18nKey =
             Decode.decodeValue Intl.decodeContextKey flags
                 |> Result.toMaybe
+                |> Maybe.withDefault Intl.defaultContextKey
     in
     ( { i18nKey = i18nKey }
     , fromElm "This should work!"
@@ -49,12 +50,7 @@ update msg model =
 
 
 view : Model -> Html Msg
-view model =
-    case model.i18nKey of
-        Nothing ->
-            Html.text "Translations not available!"
-
-        Just i18nKey ->
-            Intl.context i18nKey
-                [ Intl.text (Intl.spec "hello.welcome")
-                ]
+view { i18nKey } =
+    Intl.context i18nKey
+        [ Intl.text (Intl.spec "hello.welcome")
+        ]
