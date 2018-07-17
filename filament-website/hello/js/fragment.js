@@ -1,5 +1,6 @@
 /* global Filament, IntlElements */
-import { Elm } from "../dist/app";
+//import { Elm } from "../dist/app";
+import "../dist/app";
 
 const i18nKey = IntlElements.defineContext({
     defaultLocale: "en-US",
@@ -14,7 +15,7 @@ export const factory = (host, attrs) => {
     const root = document.createElement("div");
     host.appendChild(root);
 
-    const app = Elm.App.Hello.init({
+    const app = window.Elm.App.Hello.init({
         flags: i18nKey,
         node: root,
     });
