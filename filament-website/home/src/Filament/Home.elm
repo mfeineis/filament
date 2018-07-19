@@ -51,7 +51,9 @@ init flags url navKey =
                 { i18nKey = i18nKey
                 , future = []
                 , navKey = navKey
-                , now = {}
+                , now =
+                   { counter = 0
+                   }
                 , past = []
                 , route = Home
                 , storyMode = Interactive
@@ -87,6 +89,10 @@ type Msg
     | UrlChanged Url
     | UrlRequestedByLink UrlRequest
 
+    -- Domain
+    | Decrement
+    | Increment
+
 
 type AppModel
     = Invalid Decode.Error
@@ -94,12 +100,13 @@ type AppModel
 
 
 type StoryMode
-    = Interactive
-    | Recording
+    = Replay
+    | Interactive
 
 
 type alias State =
-    {}
+    { counter : Int
+    }
 
 
 type alias Model =
@@ -166,12 +173,12 @@ update msg appModel =
 
                 ToggleRecordStory ->
                     ( case model.storyMode of
-                        Interactive ->
-                            { model | storyMode = Recording
+                        Replay ->
+                            { model | storyMode = Interactive
                             }
 
-                        Recording ->
-                            { model | storyMode = Interactive
+                        Interactive ->
+                            { model | storyMode = Replay
                             }
                     , Cmd.none
                     )
@@ -189,6 +196,38 @@ update msg appModel =
 
                 UrlChanged url ->
                     routeIt url model
+
+                -- Domain
+                Decrement ->
+                    if canInteract model then
+                        let
+                            decrement ({ counter } as state) =
+                                { state | counter = counter - 1
+                                }
+
+                            newModel = pushState model
+                        in
+                        ( { newModel | now = decrement newModel.now }
+                        , Cmd.none
+                        )
+                    else
+                        ( model, Cmd.none )
+
+                Increment ->
+                    if canInteract model then
+                        let
+                            increment ({ counter } as state) =
+                                { state | counter = counter + 1
+                                }
+
+                            newModel = pushState model
+                        in
+                        ( { newModel | now = increment newModel.now }
+                        , Cmd.none
+                        )
+                    else
+                        ( model, Cmd.none )
+
     in
     case appModel of
         Invalid _ ->
@@ -197,6 +236,13 @@ update msg appModel =
         Valid model ->
             updateValid model |> (\( m, cmds ) -> ( Valid m, cmds ))
 
+
+pushState : Model -> Model
+pushState ({ past, now, future } as model) =
+    { model
+        | past = now :: past
+        , future = []
+    }
 
 
 -- FRAGMENTS
@@ -254,6 +300,11 @@ viewGetStarted model =
     }
 
 
+canInteract : { a | storyMode : StoryMode } -> Bool
+canInteract { storyMode } =
+    storyMode == Interactive
+
+
 canMoveBack : { a | past : List State } -> Bool
 canMoveBack { past } =
     List.length past > 0
@@ -274,23 +325,33 @@ viewHome model =
                     [ onClick ToggleRecordStory
                     ]
                     [ case model.storyMode of
-                        Interactive ->
+                        Replay ->
                             Intl.text (t StoryRecord)
 
-                        Recording ->
+                        Interactive ->
                             Intl.text (t StoryStopRecording)
                     ]
                 , UI.button
-                    [ Attr.disabled (not (canMoveBack model))
+                    [ Attr.disabled <|
+                        canInteract model || not (canMoveBack model)
                     , onClick MoveBack
                     ]
                     [ Intl.text (t StoryMoveBack)
+                    , if List.isEmpty model.past then
+                        Html.text ""
+                      else
+                        Html.text ("(" ++ String.fromInt (List.length model.past) ++ ")")
                     ]
                 , UI.button
-                    [ Attr.disabled (not (canMoveForward model))
+                    [ Attr.disabled <|
+                        canInteract model || not (canMoveForward model)
                     , onClick MoveForward
                     ]
                     [ Intl.text (t StoryMoveForward)
+                    , if List.isEmpty model.future then
+                        Html.text ""
+                      else
+                        Html.text ("(" ++ String.fromInt (List.length model.future) ++ ")")
                     ]
                 ]
             , UI.pageContent
@@ -299,6 +360,19 @@ viewHome model =
                     , Html.text " to Filament.Home"
                     ]
                 , flmntHello []
+                , Html.div []
+                    [ UI.button
+                        [ Attr.disabled (not (canInteract model))
+                        , onClick Decrement
+                        ]
+                        [ Html.text "-" ]
+                    , Html.text (String.fromInt model.now.counter)
+                    , UI.button
+                        [ Attr.disabled (not (canInteract model))
+                        , onClick Increment
+                        ]
+                        [ Html.text "+" ]
+                    ]
                 ]
             ]
         ]

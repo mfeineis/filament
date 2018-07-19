@@ -15,6 +15,10 @@ body {
     min-height: calc(100vh - 3px);
 }
 
+[data-intl-missing-translation] {
+    border: 3px dotted red;
+}
+
 @media all and (min-width: 0) and (max-width: 600px) {
     body {
         --font-size: 14px;
