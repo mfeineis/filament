@@ -14,10 +14,12 @@ const i18nKey = IntlElements.defineContext({
     },
     //includeLangSettings,
     supportedLocales: {
+        "de": "de-DE",
+        "de-DE": "de-DE",
         "en": "en-US",
         "en-US": "en-US",
-        "es": "es-ES",
-        "es-ES": "es-ES",
+        //"es": "es-ES",
+        //"es-ES": "es-ES",
     },
     loadTranslation: locale => Promise.resolve(
         {
@@ -27,7 +29,7 @@ const i18nKey = IntlElements.defineContext({
         //    document.querySelector(`[data-intl-locale="${locale}"]`).innerText
         //)
     ),
-    locale: "es-ES",
+    locale: "de-DE",
     //setDocumentLang,
 });
 

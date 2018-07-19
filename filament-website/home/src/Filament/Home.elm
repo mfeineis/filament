@@ -3,7 +3,7 @@ module Filament.Home exposing (main)
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Navigation
 import Filament.Home.Translation exposing (LangKey(..), t)
-import Html
+import Html exposing (Html)
 import Intl
 import Json.Decode as Decode exposing (Value)
 import Url exposing (Url)
@@ -119,6 +119,20 @@ update msg appModel =
 
 
 
+-- FRAGMENTS
+
+
+flmntHello : List (Html.Attribute Msg) -> Html Msg
+flmntHello attrs =
+    Html.node "flmnt-hello" attrs []
+
+
+flmntGetStarted : List (Html.Attribute Msg) -> Html Msg
+flmntGetStarted attrs =
+    Html.node "flmnt-getstarted" attrs []
+
+
+
 -- VIEW
 
 
@@ -152,9 +166,9 @@ viewGetStarted model =
         [ Intl.context model.i18nKey
             [ Intl.text (t Welcome)
             , Html.div []
-                [ Html.node "flmnt-getstarted" [] []
+                [ flmntGetStarted []
                 ]
-            , Html.node "flmnt-hello" [] []
+            , flmntHello []
             ]
         ]
     }
@@ -169,7 +183,7 @@ viewHome model =
             , Html.div []
                 [ Html.text " to Filament.Home"
                 ]
-            , Html.node "flmnt-hello" [] []
+            , flmntHello []
             ]
         ]
     }
