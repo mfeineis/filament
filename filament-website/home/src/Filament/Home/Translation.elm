@@ -5,6 +5,7 @@ module Filament.Home.Translation
         )
 
 import Intl exposing (Spec)
+import Filament.Home.Locale as Locale exposing (Locale(..))
 
 
 type LangKey
@@ -12,6 +13,7 @@ type LangKey
     | StoryMoveForward
     | StoryRecord
     | StoryStopRecording
+    | SwitchLangTo Locale
     | Welcome
 
 
@@ -30,5 +32,9 @@ t key =
         StoryStopRecording ->
             Intl.spec "story.record.stop"
 
+        SwitchLangTo lang ->
+            Intl.spec ("switch.lang.to." ++ Locale.toLanguageString lang)
+
         Welcome ->
             Intl.spec "welcome"
+

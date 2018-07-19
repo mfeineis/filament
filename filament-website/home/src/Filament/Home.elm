@@ -1,7 +1,8 @@
-module Filament.Home exposing (main)
+port module Filament.Home exposing (main)
 
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Navigation
+import Filament.Home.Locale as Locale exposing (Locale(..))
 import Filament.Home.Translation exposing (LangKey(..), t)
 import Filament.Home.UI as UI
 import Html exposing (Html)
@@ -10,6 +11,9 @@ import Html.Events exposing (onClick)
 import Intl
 import Json.Decode as Decode exposing (Value)
 import Url exposing (Url)
+
+
+port changeLocale : Value -> Cmd msg
 
 
 main : Program Value AppModel Msg
@@ -31,13 +35,15 @@ subscriptions _ =
 
 type alias Flags =
     { i18nKey : Intl.ContextKey
+    , locale : Locale
     }
 
 
 flagsDecoder : Decode.Decoder Flags
 flagsDecoder =
-    Decode.map Flags
+    Decode.map2 Flags
         (Decode.field "i18nKey" Intl.decodeContextKey)
+        (Decode.field "locale" Locale.decode)
 
 
 init : Value -> Url -> Navigation.Key -> ( AppModel, Cmd Msg )
@@ -46,13 +52,14 @@ init flags url navKey =
         Err reason ->
             ( Invalid reason, Cmd.none )
 
-        Ok { i18nKey } ->
+        Ok { i18nKey, locale } ->
             routeIt url
                 { i18nKey = i18nKey
                 , future = []
                 , navKey = navKey
                 , now =
                    { counter = 0
+                   , displayLocale = locale
                    }
                 , past = []
                 , route = Home
@@ -89,6 +96,10 @@ type Msg
     | UrlChanged Url
     | UrlRequestedByLink UrlRequest
 
+
+    -- Locale
+    | SwitchLocale Locale
+
     -- Domain
     | Decrement
     | Increment
@@ -106,6 +117,7 @@ type StoryMode
 
 type alias State =
     { counter : Int
+    , displayLanguage : Language
     }
 
 
@@ -184,6 +196,7 @@ update msg appModel =
                     )
 
                 -- Routing
+
                 UrlRequestedByLink (Internal url) ->
                     ( model
                     , Navigation.pushUrl navKey (Url.toString url)
@@ -197,7 +210,14 @@ update msg appModel =
                 UrlChanged url ->
                     routeIt url model
 
+                -- Locale
+
+                SwitchLocale locale ->
+                    ( model, changeLocale (Locale.encode locale) )
+
+
                 -- Domain
+
                 Decrement ->
                     if canInteract model then
                         let
@@ -353,6 +373,16 @@ viewHome model =
                       else
                         Html.text ("(" ++ String.fromInt (List.length model.future) ++ ")")
                     ]
+                , UI.button
+                    [ Attr.disabled (model.now.displayLocale == EnglishUS)
+                    , onClick (SwitchLocale EnglishUS)
+                    ]
+                    [ Intl.text (t SwitchLangTo EnglishUS) ]
+                , UI.button
+                    [ Attr.disabled (model.now.displayLocale == GermanDE)
+                    , onClick (SwitchLocale GermanDE)
+                    ]
+                    [ Intl.text (t SwitchLangTo GermanDE) ]
                 ]
             , UI.pageContent
                 [ Html.div []

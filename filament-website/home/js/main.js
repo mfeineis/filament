@@ -7,6 +7,7 @@ import "flmnt-getstarted";
 import "flmnt-hello";
 //import "flmnt-hello.fragment";
 
+const locale = "de-DE";
 const i18nKey = IntlElements.defineContext({
     defaultLocale: "en-US",
     defaultMessages: {
@@ -37,13 +38,14 @@ const i18nKey = IntlElements.defineContext({
         //    document.querySelector(`[data-intl-locale="${locale}"]`).innerText
         //)
     ),
-    locale: "de-DE",
+    locale,
     //setDocumentLang,
 });
 
 const app = Elm.Filament.Home.init({
     flags: {
         i18nKey,
+        locale,
     },
 });
 
