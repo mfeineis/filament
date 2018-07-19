@@ -10,7 +10,11 @@ import "flmnt-hello";
 const i18nKey = IntlElements.defineContext({
     defaultLocale: "en-US",
     defaultMessages: {
-        "home.welcome": "Welcome!",
+        "story.moveBack": "Back",
+        "story.moveForward": "Forward",
+        "story.record": "Record",
+        "story.record.stop": "Stop Recording",
+        "welcome": "Welcome!",
     },
     //includeLangSettings,
     supportedLocales: {
@@ -23,7 +27,11 @@ const i18nKey = IntlElements.defineContext({
     },
     loadTranslation: locale => Promise.resolve(
         {
-            "home.welcome": "Bienvenido",
+            "story.moveBack": "Zurück",
+            "story.moveForward": "Vorwärts",
+            "story.record": "Aufnehmen",
+            "story.record.stop": "Aufnahme stoppen",
+            "welcome": "Willkommen!",
         }
         //JSON.parse(
         //    document.querySelector(`[data-intl-locale="${locale}"]`).innerText
