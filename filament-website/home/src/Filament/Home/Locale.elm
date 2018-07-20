@@ -30,7 +30,8 @@ decode =
                     -- Falling back to English
                     Decode.succeed EnglishUS
     in
-    Decode.decodeString fromString
+    Decode.string
+        |> Decode.andThen fromString
 
 
 encode : Locale -> Value

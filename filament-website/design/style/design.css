@@ -16,7 +16,7 @@ body {
 }
 
 [data-intl-missing-translation] {
-    border: 3px dotted red;
+    border: 5px dotted red;
 }
 
 @media all and (min-width: 0) and (max-width: 600px) {

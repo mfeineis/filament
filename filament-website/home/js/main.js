@@ -15,6 +15,8 @@ const i18nKey = IntlElements.defineContext({
         "story.moveForward": "Forward",
         "story.record": "Record",
         "story.record.stop": "Stop Recording",
+        "switch.lang.to.de": "Zu Deutsch wechseln",
+        "switch.lang.to.en": "Switch to English",
         "welcome": "Welcome!",
     },
     //includeLangSettings,
@@ -32,6 +34,8 @@ const i18nKey = IntlElements.defineContext({
             "story.moveForward": "Vorwärts",
             "story.record": "Aufnehmen",
             "story.record.stop": "Aufnahme stoppen",
+            "switch.lang.to.de": "Zu Deutsch wechseln",
+            "switch.lang.to.en": "Switch to English",
             "welcome": "Willkommen!",
         }
         //JSON.parse(
@@ -50,4 +54,12 @@ const app = Elm.Filament.Home.init({
 });
 
 console.log("Elm.Filament.Home", app);
+
+app.ports.changeLocale.subscribe(locale => {
+    IntlElements.changeLocale(locale);
+
+    // FIXME: It should be validated which locale has
+    //        actually been picked
+    app.ports.localeChanged.send(locale);
+});
 

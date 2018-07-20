@@ -16,6 +16,9 @@ import Url exposing (Url)
 port changeLocale : Value -> Cmd msg
 
 
+port localeChanged : (Value -> msg) -> Sub msg
+
+
 main : Program Value AppModel Msg
 main =
     Browser.application
@@ -30,7 +33,18 @@ main =
 
 subscriptions : AppModel -> Sub Msg
 subscriptions _ =
-    Sub.none
+    let
+        decodeLocale v =
+            case Decode.decodeValue Locale.decode v of
+                Err reason ->
+                    Noop
+
+                Ok locale ->
+                    LocaleChanged locale
+    in
+    Sub.batch
+        [ localeChanged decodeLocale
+        ]
 
 
 type alias Flags =
@@ -54,13 +68,13 @@ init flags url navKey =
 
         Ok { i18nKey, locale } ->
             routeIt url
-                { i18nKey = i18nKey
+                { displayLocale = locale
+                , i18nKey = i18nKey
                 , future = []
                 , navKey = navKey
                 , now =
-                   { counter = 0
-                   , displayLocale = locale
-                   }
+                    { counter = 0
+                    }
                 , past = []
                 , route = Home
                 , storyMode = Interactive
@@ -87,20 +101,18 @@ routeIt url model =
 
 
 type Msg
-    -- Story
-    = MoveBack
+    = Noop
+      -- Story
+    | MoveBack
     | MoveForward
     | ToggleRecordStory
-
-    -- Routing
+      -- Routing
     | UrlChanged Url
     | UrlRequestedByLink UrlRequest
-
-
-    -- Locale
+      -- Locale
+    | LocaleChanged Locale
     | SwitchLocale Locale
-
-    -- Domain
+      -- Domain
     | Decrement
     | Increment
 
@@ -117,12 +129,12 @@ type StoryMode
 
 type alias State =
     { counter : Int
-    , displayLanguage : Language
     }
 
 
 type alias Model =
-    { i18nKey : Intl.ContextKey
+    { displayLocale : Locale
+    , i18nKey : Intl.ContextKey
     , future : List State
     , navKey : Navigation.Key
     , now : State
@@ -141,6 +153,9 @@ update msg appModel =
     let
         updateValid ({ navKey } as model) =
             case msg of
+                Noop ->
+                    ( model, Cmd.none )
+
                 MoveBack ->
                     let
                         ( past, now, future ) =
@@ -155,9 +170,9 @@ update msg appModel =
                                     )
                     in
                     ( { model
-                          | past = past
-                          , now = now
-                          , future = future
+                        | past = past
+                        , now = now
+                        , future = future
                       }
                     , Cmd.none
                     )
@@ -176,9 +191,9 @@ update msg appModel =
                                     )
                     in
                     ( { model
-                          | past = past
-                          , now = now
-                          , future = future
+                        | past = past
+                        , now = now
+                        , future = future
                       }
                     , Cmd.none
                     )
@@ -186,17 +201,18 @@ update msg appModel =
                 ToggleRecordStory ->
                     ( case model.storyMode of
                         Replay ->
-                            { model | storyMode = Interactive
+                            { model
+                                | storyMode = Interactive
                             }
 
                         Interactive ->
-                            { model | storyMode = Replay
+                            { model
+                                | storyMode = Replay
                             }
                     , Cmd.none
                     )
 
                 -- Routing
-
                 UrlRequestedByLink (Internal url) ->
                     ( model
                     , Navigation.pushUrl navKey (Url.toString url)
@@ -211,21 +227,29 @@ update msg appModel =
                     routeIt url model
 
                 -- Locale
+                LocaleChanged locale ->
+                    let
+                        newModel =
+                            -- FIXME: Do we want a locale change to be part
+                            --        of the state we want to be able to replay?
+                            { model | displayLocale = locale }
+                    in
+                    ( newModel, Cmd.none )
 
                 SwitchLocale locale ->
                     ( model, changeLocale (Locale.encode locale) )
 
-
                 -- Domain
-
                 Decrement ->
                     if canInteract model then
                         let
                             decrement ({ counter } as state) =
-                                { state | counter = counter - 1
+                                { state
+                                    | counter = counter - 1
                                 }
 
-                            newModel = pushState model
+                            newModel =
+                                pushState model
                         in
                         ( { newModel | now = decrement newModel.now }
                         , Cmd.none
@@ -237,17 +261,18 @@ update msg appModel =
                     if canInteract model then
                         let
                             increment ({ counter } as state) =
-                                { state | counter = counter + 1
+                                { state
+                                    | counter = counter + 1
                                 }
 
-                            newModel = pushState model
+                            newModel =
+                                pushState model
                         in
                         ( { newModel | now = increment newModel.now }
                         , Cmd.none
                         )
                     else
                         ( model, Cmd.none )
-
     in
     case appModel of
         Invalid _ ->
@@ -263,6 +288,7 @@ pushState ({ past, now, future } as model) =
         | past = now :: past
         , future = []
     }
+
 
 
 -- FRAGMENTS
@@ -353,7 +379,8 @@ viewHome model =
                     ]
                 , UI.button
                     [ Attr.disabled <|
-                        canInteract model || not (canMoveBack model)
+                        canInteract model
+                            || not (canMoveBack model)
                     , onClick MoveBack
                     ]
                     [ Intl.text (t StoryMoveBack)
@@ -364,7 +391,8 @@ viewHome model =
                     ]
                 , UI.button
                     [ Attr.disabled <|
-                        canInteract model || not (canMoveForward model)
+                        canInteract model
+                            || not (canMoveForward model)
                     , onClick MoveForward
                     ]
                     [ Intl.text (t StoryMoveForward)
@@ -374,15 +402,15 @@ viewHome model =
                         Html.text ("(" ++ String.fromInt (List.length model.future) ++ ")")
                     ]
                 , UI.button
-                    [ Attr.disabled (model.now.displayLocale == EnglishUS)
+                    [ Attr.disabled (model.displayLocale == EnglishUS)
                     , onClick (SwitchLocale EnglishUS)
                     ]
-                    [ Intl.text (t SwitchLangTo EnglishUS) ]
+                    [ Intl.text (t (SwitchLangTo EnglishUS)) ]
                 , UI.button
-                    [ Attr.disabled (model.now.displayLocale == GermanDE)
+                    [ Attr.disabled (model.displayLocale == GermanDE)
                     , onClick (SwitchLocale GermanDE)
                     ]
-                    [ Intl.text (t SwitchLangTo GermanDE) ]
+                    [ Intl.text (t (SwitchLangTo GermanDE)) ]
                 ]
             , UI.pageContent
                 [ Html.div []
